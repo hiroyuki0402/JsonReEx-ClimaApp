@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -47,6 +47,9 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="magnifyingglass" catalog="system"/>
+                                                <connections>
+                                                    <action selector="searchPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Ws-J5-vRR"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -110,6 +113,12 @@
                             <constraint firstItem="hct-Vy-fs3" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="sKl-nJ-iJz"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="countryLable" destination="utw-8c-2hN" id="f7w-NK-KwE"/>
+                        <outlet property="temperatureLabel" destination="3AP-JW-nID" id="ynY-Gg-xkQ"/>
+                        <outlet property="textField" destination="zqh-VU-c4t" id="Akp-4N-Jtk"/>
+                        <outlet property="weatherImageView" destination="LlY-4p-pp0" id="Ap0-Wo-4Tj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
