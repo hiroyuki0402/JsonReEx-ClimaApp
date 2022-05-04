@@ -16,6 +16,9 @@
 		3B99E027282134B200C24656 /* ClimaApp_JsonReExTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E026282134B200C24656 /* ClimaApp_JsonReExTests.swift */; };
 		3B99E031282134B200C24656 /* ClimaApp_JsonReExUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E030282134B200C24656 /* ClimaApp_JsonReExUITests.swift */; };
 		3B99E033282134B200C24656 /* ClimaApp_JsonReExUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E032282134B200C24656 /* ClimaApp_JsonReExUITestsLaunchTests.swift */; };
+		3B99E0482821722E00C24656 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E0472821722E00C24656 /* WeatherManager.swift */; };
+		3B99E04A2822632700C24656 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E0492822632700C24656 /* WeatherData.swift */; };
+		3B99E04C2822650B00C24656 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B99E04B2822650B00C24656 /* WeatherModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		3B99E02C282134B200C24656 /* ClimaApp-JsonReExUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ClimaApp-JsonReExUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B99E030282134B200C24656 /* ClimaApp_JsonReExUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimaApp_JsonReExUITests.swift; sourceTree = "<group>"; };
 		3B99E032282134B200C24656 /* ClimaApp_JsonReExUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClimaApp_JsonReExUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3B99E0472821722E00C24656 /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
+		3B99E0492822632700C24656 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
+		3B99E04B2822650B00C24656 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +105,12 @@
 		3B99E00E282134B100C24656 /* ClimaApp-JsonReEx */ = {
 			isa = PBXGroup;
 			children = (
+				3B99E0412821360200C24656 /* Model */,
+				3B99E040282135FC00C24656 /* View */,
+				3B99E03F282135E900C24656 /* Controller */,
 				3B99E00F282134B100C24656 /* AppDelegate.swift */,
 				3B99E011282134B100C24656 /* SceneDelegate.swift */,
 				3B99E013282134B100C24656 /* ViewController.swift */,
-				3B99E015282134B100C24656 /* Main.storyboard */,
 				3B99E018282134B200C24656 /* Assets.xcassets */,
 				3B99E01A282134B200C24656 /* LaunchScreen.storyboard */,
 				3B99E01D282134B200C24656 /* Info.plist */,
@@ -125,6 +133,39 @@
 				3B99E032282134B200C24656 /* ClimaApp_JsonReExUITestsLaunchTests.swift */,
 			);
 			path = "ClimaApp-JsonReExUITests";
+			sourceTree = "<group>";
+		};
+		3B99E03F282135E900C24656 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		3B99E040282135FC00C24656 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3B99E0422821360E00C24656 /* StoryBoard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3B99E0412821360200C24656 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3B99E0472821722E00C24656 /* WeatherManager.swift */,
+				3B99E0492822632700C24656 /* WeatherData.swift */,
+				3B99E04B2822650B00C24656 /* WeatherModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3B99E0422821360E00C24656 /* StoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				3B99E015282134B100C24656 /* Main.storyboard */,
+			);
+			path = StoryBoard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +300,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B99E014282134B100C24656 /* ViewController.swift in Sources */,
+				3B99E04A2822632700C24656 /* WeatherData.swift in Sources */,
 				3B99E010282134B100C24656 /* AppDelegate.swift in Sources */,
+				3B99E0482821722E00C24656 /* WeatherManager.swift in Sources */,
+				3B99E04C2822650B00C24656 /* WeatherModel.swift in Sources */,
 				3B99E012282134B100C24656 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
