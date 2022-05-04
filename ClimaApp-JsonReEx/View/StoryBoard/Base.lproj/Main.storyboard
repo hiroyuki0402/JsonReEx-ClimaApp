@@ -25,7 +25,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-bc-OVf">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="40"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQj-yH-RTi">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQj-yH-RTi">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="3MY-mA-kJ2"/>
@@ -33,13 +33,19 @@
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" image="location.circle.fill" catalog="system"/>
+                                                <connections>
+                                                    <action selector="searchPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kbl-Xc-CXC"/>
+                                                </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zqh-VU-c4t">
                                                 <rect key="frame" x="50" y="0.0" width="274" height="40"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="qXO-7o-REK"/>
+                                                </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dV4-7o-Kez">
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dV4-7o-Kez">
                                                 <rect key="frame" x="334" y="0.0" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="dCm-Db-Est"/>
@@ -115,6 +121,8 @@
                     </view>
                     <connections>
                         <outlet property="countryLable" destination="utw-8c-2hN" id="f7w-NK-KwE"/>
+                        <outlet property="location" destination="sQj-yH-RTi" id="vSN-S7-lzv"/>
+                        <outlet property="search" destination="dV4-7o-Kez" id="tR0-H1-daI"/>
                         <outlet property="temperatureLabel" destination="3AP-JW-nID" id="ynY-Gg-xkQ"/>
                         <outlet property="textField" destination="zqh-VU-c4t" id="Akp-4N-Jtk"/>
                         <outlet property="weatherImageView" destination="LlY-4p-pp0" id="Ap0-Wo-4Tj"/>

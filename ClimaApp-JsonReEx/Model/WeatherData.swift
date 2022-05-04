@@ -19,7 +19,7 @@ struct AcquisitionTargetAtWeatherItem: Codable {
 }
 
 struct AcquisitionTargetAtMainItem: Codable {
-    let temp: Double
+    let temp: Float
 }
 
 
@@ -70,7 +70,7 @@ struct AllWeatherItem: Codable {
 }
 
 struct AllMain: Codable {
-    let temp: Double
+    let temp: Float
     let feels_like: Double
     let temp_min: Double
     let temp_max: Double

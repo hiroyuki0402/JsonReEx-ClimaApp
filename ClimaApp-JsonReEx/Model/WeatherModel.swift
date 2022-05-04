@@ -11,7 +11,7 @@ import Foundation
 struct WeatherModel {
     let conditionId: Int
     let cityName: String
-    let temperature: Double
+    let temperature: Float
 
     var temperatureString: String {
         String(format: "%.1f", temperature)
