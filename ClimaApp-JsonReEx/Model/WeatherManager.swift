@@ -38,8 +38,7 @@ struct WeatherManager {
     func performReqest(url: String, complision: @escaping(Result<[AcquisitionTargetAtItem], Error>) -> Void) {
         guard let url = URL(string: url) else { return }
         let reqestUrl = URLRequest(url: url)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
-        let task = session.dataTask(with: reqestUrl) { data, _, err in
+        let task = URLSession.shared.dataTask(with: reqestUrl) { data, _, err in
             if let err = err {
                 complision(.failure(err))
             } else if let data = data {
@@ -50,9 +49,6 @@ struct WeatherManager {
                     let description = responseData.weather[0].description
                     let temp = responseData.main.temp
                     let name = responseData.name
-
-                    print(temp)
-
                     let acquisitionTargetAtWeather: AcquisitionTargetAtWeatherItem = .init(id: id, description: description)
                     let acquisitionTargetAtMainItem: AcquisitionTargetAtMainItem = .init(temp: temp)
 
