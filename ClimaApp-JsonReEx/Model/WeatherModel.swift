@@ -13,11 +13,13 @@ struct WeatherModel {
     let cityName: String
     let temperature: Float
 
+    /// フォーマット変更
     var temperatureString: String {
         String(format: "%.1f", temperature)
     }
 
     var conditionNmae: String {
+        // conditionIdのよって天気を変える
         switch conditionId {
             // 雷雨
         case 200...232:
