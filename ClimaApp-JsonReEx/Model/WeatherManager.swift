@@ -54,6 +54,7 @@ struct WeatherManager {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let item = try JSONDecoder().decode(AcquisitionTargetAtItem.self, from: data)
+            print(item)
             return .success([item])
         } catch {
             return  .failure(ErrorType.testErr)
