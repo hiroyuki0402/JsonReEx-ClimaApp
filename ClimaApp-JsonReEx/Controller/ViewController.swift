@@ -31,6 +31,16 @@ class ViewController: UIViewController {
         // 現在地の取得
         locationManager.requestLocation()
     }
+
+    /// UIの更新
+    private func updateUI() {
+        guard let temperature = weathers.first?.temperatureString,
+              let conditionNmae = weathers.first?.temperatureString,
+              let name = weathers.first?.cityName else { return }
+        temperatureLabel.text = temperature
+        weatherImageView.image = UIImage(systemName: conditionNmae)
+        countryLable.text = name
+    }
     
     @IBAction func searchPressed(_ sender: UIButton) {
         view.endEditing(true)
@@ -53,6 +63,10 @@ class ViewController: UIViewController {
                         WeatherModel(conditionId: $0.weather[0].id,
                                      cityName: $0.name,
                                      temperature: $0.main.temp)
+                    }
+                    // メンスレッドで更新
+                    DispatchQueue.main.async { [weak self] in
+                        self?.updateUI()
                     }
                     // 失敗時
                 case .failure(let err):
@@ -88,6 +102,10 @@ extension ViewController: CLLocationManagerDelegate {
                     WeatherModel(conditionId: $0.weather[0].id,
                                  cityName: $0.name,
                                  temperature: $0.main.temp)
+                }
+                // メインスレッドで更新
+                DispatchQueue.main.async { [weak self] in
+                    self?.updateUI()
                 }
             case .failure(let err):
 #if DEBUG
