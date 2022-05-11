@@ -34,73 +34,69 @@ class ViewController: UIViewController {
     
     @IBAction func searchPressed(_ sender: UIButton) {
         view.endEditing(true)
-        var strigUrl = ""
 
+        // 現在地押下時
         if sender.tag == 1 {
             locationManager.requestLocation()
+            // 検索ボタン押下時
         } else if sender.tag == 2 {
+            // 地域検索
             guard let text = textField.text else { return }
-            strigUrl = weatherManager.fetchWeather(mode: .ctyName(text))
-        }
-        print(strigUrl)
-        weatherManager.performReqest(url: strigUrl) { [weak self] result in
-            switch result {
-            case .success( let result):
-                self?.weathers = result.compactMap {
-                    WeatherModel(conditionId: $0.weather[0].id,
-                                 cityName: $0.name,
-                                 temperature: $0.main.temp)
-
+            // async await
+            Task {
+                let url = weatherManager.fetchWeather(mode: .ctyName(text))
+                let data =  await weatherManager.performReqest(url: url)
+                switch data {
+                    // 成功時
+                case .success(let data):
+                    self.weathers = data.compactMap {
+                        WeatherModel(conditionId: $0.weather[0].id,
+                                     cityName: $0.name,
+                                     temperature: $0.main.temp)
+                    }
+                    // 失敗時
+                case .failure(let err):
+#if DEBUG
+                    print(err)
+#endif
                 }
-                DispatchQueue.main.async {
-                    guard let temperature = self?.weathers[0].temperatureString,
-                          let conditionNmae = self?.weathers[0].conditionNmae,
-                          let name = self?.weathers[0].cityName else { return }
-                    self?.temperatureLabel.text = temperature
-                    self?.weatherImageView.image = UIImage(systemName: conditionNmae)
-                    self?.countryLable.text = name
-                }
-            case .failure(let err):
-                print(err)
             }
         }
     }
 }
 
 extension ViewController: UITextFieldDelegate {
+    //
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
     }
 }
 
 extension ViewController: CLLocationManagerDelegate {
+    //
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
         let strigUrl = weatherManager.fetchWeather(mode: .location(lat: lat, lon: lon))
-
-        weatherManager.performReqest(url: strigUrl) { [weak self] result in
-            switch result {
-            case .success( let result):
-                self?.weathers = result.compactMap {
+        // async await
+        Task {
+            let data =  await weatherManager.performReqest(url: strigUrl)
+            switch data {
+            case .success(let data):
+                self.weathers = data.compactMap {
                     WeatherModel(conditionId: $0.weather[0].id,
                                  cityName: $0.name,
                                  temperature: $0.main.temp)
                 }
-                DispatchQueue.main.async {
-                    guard let temperature = self?.weathers[0].temperatureString,
-                          let conditionNmae = self?.weathers[0].conditionNmae,
-                          let name = self?.weathers[0].cityName else { return }
-                    self?.temperatureLabel.text = temperature
-                    self?.weatherImageView.image = UIImage(systemName: conditionNmae)
-                    self?.countryLable.text = name
-                }
             case .failure(let err):
+#if DEBUG
                 print(err)
+#endif
             }
         }
     }
+    //
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }

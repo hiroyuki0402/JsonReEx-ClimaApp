@@ -7,10 +7,15 @@
 
 import Foundation
 import CoreLocation
+import UserNotifications
 
 enum URLMode {
     case ctyName(String)
     case location(lat: CLLocationDegrees, lon: CLLocationDegrees)
+}
+
+enum ErrorType: Error {
+    case testErr
 }
 
 struct WeatherManager {
@@ -22,44 +27,37 @@ struct WeatherManager {
         static let url = internetProtocol + openweatherString + api
     }
     var weatherUrl = Url.url
-
+    /// URLのモードの判定
+    /// - Parameter mode: URLMode
+    /// - Returns: modeのURLの文字列
     func fetchWeather(mode: URLMode) -> String {
         var url: String
-
+        // モードの判定
         switch mode {
+            // 地域名
         case .ctyName(let string):
             url = "\(weatherUrl)&q=\(string)"
+            // 現在地
         case .location(let lat, let lon):
             url = "\(weatherUrl)&lat=\(lat)&lon=\(lon)"
         }
         return url
     }
-
-    func performReqest(url: String, complision: @escaping(Result<[AcquisitionTargetAtItem], Error>) -> Void) {
-        guard let url = URL(string: url) else { return }
-        let reqestUrl = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: reqestUrl) { data, _, err in
-            if let err = err {
-                complision(.failure(err))
-            } else if let data = data {
-
-                do {
-                let responseData = try JSONDecoder().decode(AcquisitionTargetAtItem.self, from: data)
-                    let id = responseData.weather[0].id
-                    let description = responseData.weather[0].description
-                    let temp = responseData.main.temp
-                    let name = responseData.name
-                    let acquisitionTargetAtWeather: AcquisitionTargetAtWeatherItem = .init(id: id, description: description)
-                    let acquisitionTargetAtMainItem: AcquisitionTargetAtMainItem = .init(temp: temp)
-
-                    let data: AcquisitionTargetAtItem = .init(name: name, weather: [acquisitionTargetAtWeather], main: acquisitionTargetAtMainItem)
-                    complision(.success([data]))
-                } catch let err {
-                    complision(.failure(err))
-                }
-            }
+    /// 天気取得
+    /// - Parameter url: URL
+    /// - Returns: ハンドラー
+    func performReqest(url: String) async -> Result<[AcquisitionTargetAtItem], Error> {
+        guard let url = URL(string: url) else {
+            return  .failure(ErrorType.testErr)
         }
-        task.resume()
+        // async await
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let item = try JSONDecoder().decode(AcquisitionTargetAtItem.self, from: data)
+            return .success([item])
+        } catch {
+            return  .failure(ErrorType.testErr)
+        }
     }
 }
 
