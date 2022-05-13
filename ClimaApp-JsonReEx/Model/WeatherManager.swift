@@ -19,7 +19,6 @@ enum ErrorType: Error {
 }
 
 struct WeatherManager {
-
     struct Url {
         static let api = "appid=cbe1752976ad8c7fec68df0f03be2f35"
         static let internetProtocol = "https://"
@@ -43,21 +42,20 @@ struct WeatherManager {
         }
         return url
     }
+
     /// 天気取得
-    /// - Parameter url: URL
-    /// - Returns: ハンドラー
-    func performReqest(url: String) async -> Result<[AcquisitionTargetAtItem], Error> {
+    /// - Parameter url: TextFieldで入力した地域,国
+    /// - Returns: AcquisitionTargetAtItemの配列(Codble)
+    func performReqest(url: String) async throws -> [AcquisitionTargetAtItem] {
         guard let url = URL(string: url) else {
-            return  .failure(ErrorType.testErr)
+            throw ErrorType.testErr
         }
-        // async await
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let item = try JSONDecoder().decode(AcquisitionTargetAtItem.self, from: data)
-            print(item)
-            return .success([item])
+            return [item]
         } catch {
-            return  .failure(ErrorType.testErr)
+            throw ErrorType.testErr
         }
     }
 }

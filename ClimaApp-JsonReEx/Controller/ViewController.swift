@@ -19,13 +19,14 @@ class ViewController: UIViewController {
     private var locationManager: CLLocationManager!
     private var weatherManager: WeatherManager!
     private var weathers = [WeatherModel]()
+    private var weathers2 = [AcquisitionTargetAtItem]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherManager = WeatherManager()
         locationManager = CLLocationManager()
         locationManager.delegate = self
-
+        print(weathers2)
         // 利用許可を促す
         locationManager.requestWhenInUseAuthorization()
         // 現在地の取得
@@ -35,13 +36,14 @@ class ViewController: UIViewController {
     /// UIの更新
     private func updateUI() {
         guard let temperature = weathers.first?.temperatureString,
-              let conditionNmae = weathers.first?.temperatureString,
+              let conditionName = weathers.first?.conditionNmae,
               let name = weathers.first?.cityName else { return }
         temperatureLabel.text = temperature
-        weatherImageView.image = UIImage(systemName: conditionNmae)
+        weatherImageView.image = UIImage(systemName: conditionName)
         countryLable.text = name
     }
-    
+
+
     @IBAction func searchPressed(_ sender: UIButton) {
         view.endEditing(true)
 
@@ -55,24 +57,12 @@ class ViewController: UIViewController {
             // async await
             Task {
                 let url = weatherManager.fetchWeather(mode: .ctyName(text))
-                let data =  await weatherManager.performReqest(url: url)
-                switch data {
-                    // 成功時
-                case .success(let data):
-                    self.weathers = data.compactMap {
-                        WeatherModel(conditionId: $0.weather[0].id,
-                                     cityName: $0.name,
-                                     temperature: $0.main.temp)
-                    }
-                    // メンスレッドで更新
-                    DispatchQueue.main.async { [weak self] in
-                        self?.updateUI()
-                    }
-                    // 失敗時
-                case .failure(let err):
-#if DEBUG
-                    print(err)
-#endif
+                let data =  try await weatherManager.performReqest(url: url)
+                self.weathers =  data.compactMap {
+                    WeatherModel(conditionId:  $0.weather[0].id, cityName: $0.name, temperature: $0.main.temp)
+                }
+                DispatchQueue.main.async { [weak self] in
+                    self?.updateUI()
                 }
             }
         }
@@ -93,28 +83,17 @@ extension ViewController: CLLocationManagerDelegate {
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
         let strigUrl = weatherManager.fetchWeather(mode: .location(lat: lat, lon: lon))
-        // async await
         Task {
-            let data =  await weatherManager.performReqest(url: strigUrl)
-            switch data {
-            case .success(let data):
-                self.weathers = data.compactMap {
-                    WeatherModel(conditionId: $0.weather[0].id,
-                                 cityName: $0.name,
-                                 temperature: $0.main.temp)
-                }
-                // メインスレッドで更新
-                DispatchQueue.main.async { [weak self] in
-                    self?.updateUI()
-                }
-            case .failure(let err):
-#if DEBUG
-                print(err)
-#endif
+            let data =  try await weatherManager.performReqest(url: strigUrl)
+            self.weathers =  data.compactMap {
+                WeatherModel(conditionId:  $0.weather[0].id, cityName: $0.name, temperature: $0.main.temp)
+            }
+            DispatchQueue.main.async { [weak self] in
+                self?.updateUI()
             }
         }
     }
-    //
+
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
     }
