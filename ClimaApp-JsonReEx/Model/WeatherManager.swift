@@ -12,15 +12,6 @@ import UserNotifications
 enum URLMode {
     case ctyName(String)
     case location(lat: CLLocationDegrees, lon: CLLocationDegrees)
-
-    func fetchWeather() -> String {
-        switch self {
-        case .ctyName(let string):
-            <#code#>
-        case .location(let lat, let lon):
-            <#code#>
-        }
-    }
 }
 
 enum ErrorType: Error {
@@ -57,15 +48,11 @@ struct WeatherManager {
     /// - Returns: AcquisitionTargetAtItemの配列(Codble)
     func performReqest(url: String) async throws -> [AcquisitionTargetAtItem] {
         guard let url = URL(string: url) else {
-            throw ErrorType.testErr
+            throw URLError(.badURL)
         }
-        do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let item = try JSONDecoder().decode(AcquisitionTargetAtItem.self, from: data)
             return [item]
-        } catch {
-            throw ErrorType.testErr
-        }
     }
 }
 
