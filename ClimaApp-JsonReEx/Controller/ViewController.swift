@@ -46,7 +46,6 @@ class ViewController: UIViewController {
 
     @IBAction func searchPressed(_ sender: UIButton) {
         view.endEditing(true)
-
         // 現在地押下時
         if sender.tag == 1 {
             locationManager.requestLocation()

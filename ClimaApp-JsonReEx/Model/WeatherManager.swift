@@ -12,6 +12,15 @@ import UserNotifications
 enum URLMode {
     case ctyName(String)
     case location(lat: CLLocationDegrees, lon: CLLocationDegrees)
+
+    func fetchWeather() -> String {
+        switch self {
+        case .ctyName(let string):
+            <#code#>
+        case .location(let lat, let lon):
+            <#code#>
+        }
+    }
 }
 
 enum ErrorType: Error {
