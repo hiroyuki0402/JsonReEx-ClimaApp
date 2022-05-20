@@ -38,6 +38,7 @@ class ViewController: UIViewController {
         guard let temperature = weathers.first?.temperatureString,
               let conditionName = weathers.first?.conditionNmae,
               let name = weathers.first?.cityName else { return }
+       
         temperatureLabel.text = temperature
         weatherImageView.image = UIImage(systemName: conditionName)
         countryLable.text = name
@@ -55,10 +56,12 @@ class ViewController: UIViewController {
             guard let text = textField.text else { return }
             // async await
             Task {
-                let url = weatherManager.fetchWeather(mode: .ctyName(text))
+                let url = URLMode.ctyName(text).getUrl()
                 let data =  try await weatherManager.performReqest(url: url)
                 self.weathers =  data.compactMap {
-                    WeatherModel(conditionId:  $0.weather[0].id, cityName: $0.name, temperature: $0.main.temp)
+                    WeatherModel(conditionId:  $0.weather[0].id,
+                                 cityName: $0.name,
+                                 temperature: $0.main.temp)
                 }
                 DispatchQueue.main.async { [weak self] in
                     self?.updateUI()
@@ -81,9 +84,9 @@ extension ViewController: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         let lat = location.coordinate.latitude
         let lon = location.coordinate.longitude
-        let strigUrl = weatherManager.fetchWeather(mode: .location(lat: lat, lon: lon))
         Task {
-            let data =  try await weatherManager.performReqest(url: strigUrl)
+            let url = URLMode.location(lat: lat, lon: lon).getUrl()
+            let data =  try await weatherManager.performReqest(url: url)
             self.weathers =  data.compactMap {
                 WeatherModel(conditionId:  $0.weather[0].id, cityName: $0.name, temperature: $0.main.temp)
             }
@@ -97,3 +100,5 @@ extension ViewController: CLLocationManagerDelegate {
         print(error)
     }
 }
+
+
